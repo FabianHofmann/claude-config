@@ -1,0 +1,19 @@
+{
+  "name": "maintenance-plan",
+  "description": "Plan implementation of #1003 - planned generator maintenance optimization",
+  "createdAt": 1771833536347,
+  "leadAgentId": "team-lead@maintenance-plan",
+  "leadSessionId": "ea77df31-a385-480a-8912-27daf42030bb",
+  "members": [
+    {
+      "agentId": "team-lead@maintenance-plan",
+      "name": "team-lead",
+      "agentType": "team-lead",
+      "model": "claude-opus-4-6",
+      "joinedAt": 1771833536347,
+      "tmuxPaneId": "",
+      "cwd": "/home/fabian/vres/py/pypsa",
+      "subscriptions": []
+    }
+  ]
+}

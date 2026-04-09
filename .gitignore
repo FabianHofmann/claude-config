@@ -1,0 +1,45 @@
+# Credentials and secrets
+.credentials.json
+
+# Local/machine-specific settings
+settings.local.json
+
+# Session and runtime data
+debug/
+file-history/
+shell-snapshots/
+session-env/
+todos/
+transcripts/
+checkpoints/
+plans/
+projects/
+tasks/
+plugins/
+backups/
+cache/
+sessions/
+
+# History and caches
+history.jsonl
+stats-cache.json
+__store.db
+
+# Analytics and telemetry
+statsig/
+telemetry/
+
+# Downloads
+downloads/
+
+# IDE integration (machine-specific)
+ide/
+
+# Plugin runtime data (keep config)
+plugins/cache/
+plugins/marketplaces/
+plugins/installed_plugins.json
+plugins/repos/
+
+# Helpers (track when content exists)
+# helpers/
