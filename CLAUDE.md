@@ -1,3 +1,10 @@
+# Think before coding
+
+- State your assumptions explicitly. If uncertain, ask.
+- Present multiple interpretations rather than choosing silently.
+- Advocate for simpler approaches when they exist.
+- Stop and identify confusion rather than proceeding with unclear requirements.
+
 # Instructions for working with Python code bases
 
 - Follow DRY and KISS principles.
@@ -18,3 +25,9 @@ In Python language:
 - Test behavior and outcomes, not internal implementation details.
 - Avoid mocks except at external boundaries.
 - Prefer Arrange / Act / Assert (AAA) when it improves clarity.
+
+Formatting / readability:
+- Avoid long multi-line bracketed expressions with non-trivial nested calls. Extract intermediates into named local variables so each line is a complete, named thought and arguments can be debugged individually.
+- Aim for compact *and* clear: prefer single-line statements, each a complete thought. Compactness targets needless line *spread* (wrapped nested calls), not readable line count — extracting intermediates is line count well spent, but never collapse distinct logic into one dense line. Shorter is only better when it stays clearer; stop when fewer lines start to obscure intent.
+- Only extract when the name adds meaning. Trivial args (`timeout=30`, `index=df.index`) stay inline; if no good name comes to mind, leave it inline.
+- Keyword arguments split across lines are fine — the keyword already names the value. The pain is with positional nested calls.
