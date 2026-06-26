@@ -18,7 +18,12 @@ tasks/
 plugins/
 backups/
 cache/
+teams/
+paste-cache/
+daemon/
+jobs/
 sessions/
+daemon.log
 
 # History and caches
 history.jsonl
@@ -43,3 +48,5 @@ plugins/repos/
 
 # Helpers (track when content exists)
 # helpers/
+.last-cleanup
+.last-update-result.json
