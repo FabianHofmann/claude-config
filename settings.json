@@ -72,11 +72,21 @@
   },
   "enabledMcpjsonServers": [],
   "hooks": {
-    "PreCompact": []
+    "PreCompact": [],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/context-warn.sh"
+          }
+        ]
+      }
+    ]
   },
   "statusLine": {
     "type": "command",
-    "command": ".claude/statusline-command.sh"
+    "command": "~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
     "code-review@claude-plugins-official": true,
