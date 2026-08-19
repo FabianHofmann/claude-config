@@ -81,7 +81,8 @@
   "enabledPlugins": {
     "code-review@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true
+    "code-simplifier@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true
   },
   "effortLevel": "medium",
   "tui": "fullscreen",
@@ -89,6 +90,8 @@
     "enabled": true,
     "mode": "hold"
   },
+  "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
   "voiceEnabled": true
 }

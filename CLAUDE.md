@@ -1,33 +1,49 @@
-# Think before coding
+# Clear and focused communication
 
-- State your assumptions explicitly. If uncertain, ask.
-- Present multiple interpretations rather than choosing silently.
-- Advocate for simpler approaches when they exist.
-- Stop and identify confusion rather than proceeding with unclear requirements.
+- use easy-readable language
+- be snappy
+- keep things simple and beautiful
+- stay honest, politness is not important
+- don't repeat information
+- don't use headers in the chat with me
+- use numbered lists and markdown headings when they improve navigation.
+- when presenting three or more findings, decisions, options, risks, questions, or actions assign every one a short code.
+    - Use `D1`, `D2`, `DN` for decisions.
+    - Use `O1`, ... for options.
+    - Use `F1`, ... for findings.
+    - Use `R1`, ... for risks.
+    - Use `Q1`, ... for questions.
+    - Use `A1`, ... for actions.
+    - Use `S1`, ... for encountered, related or unrelated issues
+    - Use `C1`, ... for corrections.  
+    - Invent new references for sections we don't have.
+    - Preserve the same codes throughout the conversation.
+    - Do not create codes for short simple answers.
+- advocate for simple approaches.
+- stop and identify confusion rather than proceeding with unclear requirements.
 
 # Instructions for working with Python code bases
 
 - Follow DRY and KISS principles.
 - Follow FAIL FAST principle.
 - AVOID GENTLE HANDLING of exceptions and errors
-- Keep the code changes LEAN and EFFICIENT, DON'T ADD BOILERPLATE CODE.
+- Keep the code changes LEAN and EFFICIENT.
 - DON'T ADD comments in the code.
-- DON'T BE VERBOSE in the documentation
-
-In Python language:
-- Use typing annotations for better code clarity.
-- AVOID FUNCTIONS like `hasattr` or `getattr` and make sure to use type-specific and consistent operations instead
-- Make sure data models and workflows are consistent and streamlined, rather look at the bigger picture than smaller case fixes.
-- Don't write comments that repeat our principles.
+- Don't write comments that repeat our principles, the chat context or your instructions.
+- Use typing annotations.
+- Avoid `hasattr` or `getattr`
+- Avoid long multi-line bracketed expressions with non-trivial nested calls. - Prefer pytest parametrization over repetitive test cases.
 - Write tests that are concise, readable, deterministic and aligned with the existing suite.
-- Prefer pytest parametrization over repetitive test cases.
 - Reuse existing fixtures and helpers; do not duplicate covered scenarios.
 - Test behavior and outcomes, not internal implementation details.
 - Avoid mocks except at external boundaries.
-- Prefer Arrange / Act / Assert (AAA) when it improves clarity.
+- For stratigic decisions that might araise, don't be lazy: data models and workflows need to be consistent as a whole; look at the bigger picture.
+- Always use `uv` or `pixi` to execute code with optional extensions, if packages are missing, raise.
 
-Formatting / readability:
-- Avoid long multi-line bracketed expressions with non-trivial nested calls. Extract intermediates into named local variables so each line is a complete, named thought and arguments can be debugged individually.
-- Aim for compact *and* clear: prefer single-line statements, each a complete thought. Compactness targets needless line *spread* (wrapped nested calls), not readable line count — extracting intermediates is line count well spent, but never collapse distinct logic into one dense line. Shorter is only better when it stays clearer; stop when fewer lines start to obscure intent.
-- Only extract when the name adds meaning. Trivial args (`timeout=30`, `index=df.index`) stay inline; if no good name comes to mind, leave it inline.
-- Keyword arguments split across lines are fine — the keyword already names the value. The pain is with positional nested calls.
+# Ultracode workflows
+
+- don't use more than 4 agents in workflows when using `ultracode`
+
+# Sub-agents
+
+- use Sonnet as a model for sub-agent if the complexity of the task allows it
