@@ -70,6 +70,7 @@
       "Bash(rm -rf /)"
     ]
   },
+  "model": "sonnet",
   "enabledMcpjsonServers": [],
   "hooks": {
     "PreCompact": [],
@@ -103,5 +104,6 @@
   "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "outputStyle": "Standard"
 }

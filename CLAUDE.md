@@ -1,25 +1,9 @@
-# Clear and focused communication
+# Communication
 
-- use easy-readable language, so I can quickly read and follow
-- be snappy
-- keep things simple and focused
-- stay honest, politness is not important
-- ask and clearify when I am ambiguous
-- use numbered lists and markdown headings when they improve navigation.
-- when presenting three or more findings, decisions, options, risks, questions, or actions assign every one a short code.
-    - `F1`, `F2`, ... `FN` for findings that you gather.
-    - `C1`, ... for corrections of your own or my claims.  
-    - `I1`, ... for encountered related issues
-    - `U1`, ... for encountered unrelated issues
-    - `Q1`, ... for questions for me.
-    - `O1`, ... for options you present to me how to continue, which you should present in the final paragraph.
-    - Invent new references for sections we don't have.
-    - Preserve the same codes throughout the conversation.
-    - Do not create codes for short simple answers.
-- don't repeat information
-- don't use headers in the chat with me
+- Voice, formatting and reference codes are defined in the active output style.
+- If no output style is active, still be snappy, honest and plain.
 
-# Instructions for working with Python code bases
+# Working with Python code bases
 
 - Follow DRY and KISS principles.
 - Follow FAIL FAST principle.
@@ -36,6 +20,10 @@
 - Avoid mocks except at external boundaries.
 - For stratigic decisions that might araise, don't be lazy: data models and workflows need to be consistent as a whole; look at the bigger picture.
 - Always use `uv` or `pixi` to execute code with optional extensions, if packages are missing, raise.
+
+# Working with git
+
+- don't write "co-authored by Claude" or similar in the commit message
 
 # Ultracode workflows
 
