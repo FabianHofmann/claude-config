@@ -33,4 +33,4 @@
 
 - we want to keep the context in our chat focused
 - for work that you can delegate to sub-agents, do so
-- use Sonnet as a model for sub-agent if the complexity of the task allows it
+- use Sonnet as a model for sub-agent if the complexity of the task allows it, otherwise use Opus 4.8 sub-agents. For really hard quests use Fable 5.

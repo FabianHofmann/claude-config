@@ -70,7 +70,7 @@
       "Bash(rm -rf /)"
     ]
   },
-  "model": "sonnet",
+  "model": "claude-opus-4-8",
   "enabledMcpjsonServers": [],
   "hooks": {
     "PreCompact": [],
@@ -91,10 +91,11 @@
   },
   "enabledPlugins": {
     "code-review@claude-plugins-official": false,
-    "context7@claude-plugins-official": true,
+    "context7@claude-plugins-official": false,
     "code-simplifier@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true
   },
+  "outputStyle": "Standard",
   "effortLevel": "medium",
   "tui": "fullscreen",
   "voice": {
@@ -104,6 +105,5 @@
   "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
-  "voiceEnabled": true,
-  "outputStyle": "Standard"
+  "voiceEnabled": true
 }
