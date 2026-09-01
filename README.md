@@ -73,7 +73,7 @@ Grouped by purpose.
 | `git-commit`, `git-push` | Write a compact commit message and optionally push. |
 | `git-history`, `git-worktree` | Investigate history, or work on branches in parallel. |
 | `pr-raise`, `pr-prime` | Open a pull request, or read an existing one for context. |
-| `issue-raise`, `issue-solve` | File a GitHub issue, or drive one to a fix. |
+| `issue-draft`, `issue-raise`, `issue-solve` | Draft issues locally, file one on GitHub, or drive one to a fix. |
 | `ci-fix`, `ci-monitor` | Read the CI status and fix failing checks. |
 
 ### Code quality (`code-`)
