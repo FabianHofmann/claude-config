@@ -1,6 +1,6 @@
 # Shared Review Rubric
 
-Shared by `abs-review`, `abs-review-branch`, `diff-review`, `diff-review-branch`. Each of those skills sets the **scope** (which git command, full files vs. diff) and then applies everything below. Read this file in full before spawning reviewers.
+Shared by `review-full`, `review-full-branch`, `review-diff`, `review-diff-branch`. Each of those skills sets the **scope** (which git command, full files vs. diff) and then applies everything below. Read this file in full before spawning reviewers.
 
 Guiding principle: **signal over noise**. A good review surfaces a handful of issues a competent engineer would actually fix, not a flood of suggestions. If in doubt, drop it.
 

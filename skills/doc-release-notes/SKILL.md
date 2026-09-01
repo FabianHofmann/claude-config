@@ -1,0 +1,8 @@
+---
+name: doc-release-notes
+description: Add release notes of the proposed changes to the repository. Use when documenting changes, writing changelogs, or updating release notes.
+---
+
+# Add Release Notes
+
+Add release notes of the proposed changes to the repository. The release notes should be concise and informative, summarizing the changes. The file is likely named `doc/release_notes.md` or `doc/release_notes.rst`. In case, you are unsure about the context, have a look at the latest commits of the current branch that are not in the master branch.
