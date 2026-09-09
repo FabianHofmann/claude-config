@@ -1,10 +1,12 @@
 ---
 name: graft
-description: Use when working in a code repo and the `graft` command is available
-  — prefer graft to locate, understand, trace what calls a symbol or what a
-  change breaks, or scope an edit, before grepping or reading source. Works on
-  any graft-indexed repo; if the repo is not indexed yet, run `graft build`
-  first (cheap, $0, git-ignored local cache).
+description: Use only when the user explicitly asks to use graft, or when the
+  task is a large-scale code scan, exhaustive search, cross-file trace, or
+  multi-file refactor where locating symbols and mapping who-calls-what matters
+  — then prefer graft to locate, understand, and trace before grepping or
+  reading source. Do not reach for it on small, single-file, or already-located
+  edits. Requires the `graft` command; if the repo is not indexed yet, run
+  `graft build` first (cheap, $0, git-ignored local cache).
 ---
 
 # graft
