@@ -50,3 +50,9 @@ plugins/repos/
 # helpers/
 .last-cleanup
 .last-update-result.json
+
+graft/
+skills/synced/
+feedback/
+state/
+policy-limits.json.stamp.json

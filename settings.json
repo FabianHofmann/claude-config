@@ -64,16 +64,29 @@
       "Bash(date:*)",
       "Bash(dirname:*)",
       "Bash(basename:*)",
-      "Bash(realpath:*)"
+      "Bash(realpath:*)",
+      "Bash(graft:*)",
+      "Bash(npx graft:*)",
+      "Bash(graft-dev:*)"
     ],
     "deny": [
       "Bash(rm -rf /)"
     ]
   },
-  "model": "claude-opus-4-8",
+  "model": "opus[1m]",
   "enabledMcpjsonServers": [],
   "hooks": {
     "PreCompact": [],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"live git branch: %s\"}}' \"$(git branch --show-current 2>/dev/null)\""
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
@@ -104,6 +117,7 @@
   },
   "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
-  "theme": "auto",
+  "theme": "dark",
+  "preferredNotifChannel": "terminal_bell",
   "voiceEnabled": true
 }

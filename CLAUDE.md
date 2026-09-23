@@ -24,6 +24,8 @@
 # Working with git
 
 - don't write "co-authored by Claude" or similar in the commit message
+- work in the current worktree, so I see changes here in my Zed editor.  
+- when raising issues on Github, use the "issue-raise" skill. always add minimial reproducabel examples for bugs.
 
 # Ultracode workflows
 
@@ -33,4 +35,5 @@
 
 - we want to keep the context in our chat focused
 - for work that you can delegate to sub-agents, do so
-- use Sonnet as a model for sub-agent if the complexity of the task allows it, otherwise use Opus 4.8 sub-agents. For really hard quests use Fable 5.
+- for sub-agents default to Opus. Use Sonnet for low complexity tasks. For hard quests use Fable.
+- for reviewing (with or without review skills), prefer Opus models over Fable models to save tokens.

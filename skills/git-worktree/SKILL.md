@@ -1,48 +1,67 @@
 ---
 name: git-worktree
-description: Create a git worktree on a new branch and open it in Zed, so the editor surface and Claude both move to the worktree. Use when the user explicitly asks to branch off development into another worktree.
+description: Create a git worktree on a new branch, move this chat's recorded directory to it, then re-root the current Zed window onto it. The editor surface and the resumed Claude both land on the worktree, aligned, with no manual resume step. Use when the user explicitly asks to branch off development into another worktree.
 ---
 
 # Git Worktree Management
 
 Create a worktree on a new branch at Zed's default worktree location, then re-root
-the current Zed window onto it. This keeps the Zed surface (file tree, tabs, git
-panel) and Claude on the same checkout, without spawning a new window.
+the current Zed window onto it. The Zed surface (file tree, tabs, git panel) and the
+resumed Claude end up on the same checkout, with matching working directories.
 
-Do not use `/cd` for this. `/cd` moves Claude's working directory but leaves the
-Zed window rooted on the original repo, so the two surfaces drift apart.
+The flow has two phases with one pause. The pause is unavoidable: re-rooting kills
+this terminal thread, and only a `/cd` typed by the user can move the session's
+recorded directory onto the worktree before it dies. Everything else is automatic.
+The re-rooted window auto-resumes this chat, so there is no manual resume step.
 
-## Steps
+Run each phase as a single bash call. Do not inspect or verify between steps.
 
-1. Pick a sensible branch name from the task. Base off `origin/main` unless the
-   user names another base.
+## Phase 1: create and hand off `/cd`
 
-2. Create the worktree with the user-defined `create_worktree` shell function. It
-   creates the worktree at `../worktrees/<branch>` (Zed's `git.worktree_directory`
-   default) and copies untracked files over.
+Pick a sensible branch name from the task. Base off `origin/main` unless the user
+names another base. Then run one call: create the worktree with the user-defined
+`create_worktree` shell function, capture the path it reports, and copy a ready `/cd`
+command to the clipboard. Never recompute the path yourself; the function is the
+single source of truth.
 
-   ```bash
-   create_worktree <branch> origin/main
-   ```
+```bash
+worktree=$(create_worktree <branch> origin/main | sed -n 's/^WORKTREE_PATH=//p')
+[ -n "$worktree" ] || echo "STALE: no WORKTREE_PATH. Open a fresh terminal so the updated shell function loads, then retry."
+printf '/cd %s' "$worktree" | wl-copy
+```
 
-3. Re-root the current Zed window onto the worktree with `zed -e` (open in the
-   existing window, not a new one). Its path is `../worktrees/<branch>` relative to
-   the repo root.
+`create_worktree` places the worktree at `../worktrees/<branch>` relative to the main
+repo (Zed's `git.worktree_directory` default), copies uncommitted changes over
+(modified tracked files and untracked files), and prints its final path as a
+`WORKTREE_PATH=...` line.
 
-   ```bash
-   repo_root=$(git rev-parse --show-toplevel)
-   zed -e "$(dirname "$repo_root")/worktrees/<branch>"
-   ```
+If the command prints `STALE`, the running shell still has an old snapshot of the
+function. Stop and tell the user to open a fresh terminal, then rerun the skill. Do
+not paste an empty `/cd`.
 
-4. Re-rooting kills this terminal thread, but the re-rooted window auto-starts a
-   fresh Claude in the worktree's agent panel. Copy the `/resume <id>` slash command
-   to the clipboard so the user pastes it straight into that Claude input.
-   `/resume <id>` finds the session from any directory (Claude Code 2.1.223+), so it
-   switches the fresh session to this chat with full history.
+Tell the user: paste the clipboard into this Claude input and press enter. This moves
+the chat's transcript and recorded directory onto the worktree, keeping full history.
+Do not re-root yet. Then stop and wait. Control returns on the next turn.
 
-   ```bash
-   printf '/resume %s' "$CLAUDE_CODE_SESSION_ID" | wl-copy
-   ```
+## Phase 2: re-root, auto-resume
 
-   Tell the user: in the re-rooted window, paste into the Claude input and press
-   enter. The chat resumes, now rooted in the worktree.
+After `/cd`, `git rev-parse --show-toplevel` returns the worktree. Run one call: drop
+a single-use resume sentinel for the `co` wrapper, then re-root the current Zed window
+with `zed -e` (open in the existing window, not a new one).
+
+```bash
+worktree=$(git rev-parse --show-toplevel)
+printf '%s\t%s\t%s' "$CLAUDE_CODE_SESSION_ID" "$worktree" "$(date +%s)" \
+    > "${XDG_RUNTIME_DIR:-/tmp}/claude-resume-next"
+zed -e "$worktree"
+```
+
+Re-rooting kills this terminal thread. The re-rooted window auto-starts `co` in the
+worktree. The `co` wrapper sees the fresh sentinel for this directory and boots
+straight into `claude --resume`, so the chat comes back with full history, rooted on
+the worktree, aligned with the editor. No paste is needed.
+
+The sentinel is single-use and expires in 90 seconds, so an unrelated new window never
+picks it up. If `co` was started before the sentinel was written, or later than 90
+seconds, the window starts a fresh Claude instead; recover by pasting
+`/resume <CLAUDE_CODE_SESSION_ID>` into it.
