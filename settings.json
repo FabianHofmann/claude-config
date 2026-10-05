@@ -73,7 +73,6 @@
       "Bash(rm -rf /)"
     ]
   },
-  "model": "opus[1m]",
   "enabledMcpjsonServers": [],
   "hooks": {
     "PreCompact": [],
@@ -119,5 +118,6 @@
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "preferredNotifChannel": "terminal_bell",
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "model": "fable"
 }
