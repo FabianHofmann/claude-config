@@ -6,10 +6,10 @@ You can copy any part of it into your own `~/.claude/` directory.
 
 ## Recommended models
 
-- **Opus 4.8** for all day-to-day work and for implementation. It is the strongest general model here and the default in `settings.json`.
-- **Fable 5** for planning. Use it when you design an approach before writing code, for example with the `plan-prepare` and `plan-orchestrate` skills.
+- **Opus** for all day-to-day work and for implementation. It is the default in `settings.json`.
+- **Fable** for planning and hard problems. Use it when you design an approach before writing code, for example with the `plan-prepare` and `plan-orchestrate` skills.
 
-In short: plan with Fable 5, then build and do everything else with Opus 4.8. Use Sonnet 5 for sub-agentic tasks and for delegated work with clear scope.
+In short: plan with Fable, then build and do everything else with Opus. Use Sonnet for sub-agentic tasks and for delegated work with clear scope.
 
 ## Core concepts
 
