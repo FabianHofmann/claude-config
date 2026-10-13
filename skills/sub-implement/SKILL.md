@@ -1,5 +1,5 @@
 ---
-name: sub-irr
+name: sub-implement
 description: Delegate a task to the `implement-review-revise` lead agent, which runs implementer, reviewer and reviser sub-agents and returns a compact report. Use when the user wants a task implemented, reviewed and revised without filling the main context.
 ---
 
