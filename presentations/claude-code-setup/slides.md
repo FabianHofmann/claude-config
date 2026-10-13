@@ -10,7 +10,7 @@ footer: 'Claude Code: lessons learned'
 <!-- _paginate: false -->
 <!-- _footer: '' -->
 
-<div class="legend"><span>Why</span><span>Anatomy</span><span>Context</span><span>Tracking</span><span>Quality</span><span>Adopt</span></div>
+<div class="legend"><span>Why</span><span>Anatomy</span><span>Context</span><span>Attention</span><span>Trust</span><span>Adopt</span></div>
 
 # Keeping LLMs focused, traceable and efficient
 
@@ -30,18 +30,15 @@ The bar at the top of each slide is the talk timeline: grey is ahead, amber is w
 
 ## The agent scales. Three things do not.
 
-<p class="lede">Agents now run for an hour, read dozens of files and write hundreds of lines. The human job moves from writing code to orchestrating and checking it.</p>
-
-<div class="limits">
+<div class="limits tall">
 <div><b>Context</b>what the model can hold</div>
 <div><b>Attention</b>what you can follow</div>
 <div><b>Trust</b>what you can merge without reading</div>
 </div>
 
-> Lesson: the limits are on the model's memory and on the human, not on the model's speed.
-
 <!--
-The agent got much faster and more capable. Three things did not grow with it: the context window, your attention and your trust in the output.
+Agents now run for an hour, read dozens of files and write hundreds of lines. The human job moves from writing code to orchestrating and checking it.
+Three things did not grow with the agent: the context window, your attention and your trust in the output. The limits are on the model's memory and on the human, not on the model's speed.
 The rest of the talk is about these three limits, one slide each, then what helps.
 -->
 
@@ -51,18 +48,36 @@ The rest of the talk is about these three limits, one slide each, then what help
 
 ## Limit 1: the context window
 
+<div class="cols n">
+<div>
+
 <p class="big">~200k <small>tokens</small></p>
 
 - decreased quality
 - slower
 - higher costs
-- every turn sends the whole history again
+
+</div>
+<div>
+
+<h3>Every turn sends the whole history again</h3>
+<div class="grow">
+<p style="--k:1">turn 1</p>
+<p style="--k:2">turn 2</p>
+<p style="--k:3">turn 3</p>
+<p style="--k:4">turn 4</p>
+<p style="--k:5">turn 5</p>
+</div>
+
+</div>
+</div>
 
 > Lesson: every file the agent reads is paid for again on every later turn.
 
 <!--
-Think of the context like the memory budget of a solve. Everything the agent read stays in the window and is paid for again each turn.
-Past roughly 200k tokens, answers get worse, replies get slower and bills go up. Each turn re-sends everything, so a file dump early in the session costs on every turn after it.
+Think of the context like the memory budget of a solve. Everything the agent read stays in the window.
+Past roughly 200k tokens, answers get worse, replies get slower and bills go up.
+The bars: amber is the new part of each turn, navy is the history that is sent again. A file dump early in the session costs on every turn after it.
 -->
 
 ---
@@ -71,18 +86,19 @@ Past roughly 200k tokens, answers get worse, replies get slower and bills go up.
 
 ## Limit 2: your attention
 
-- The agent produces a lot of text and a lot of options
-- After an hour you have ten open threads and three half-made decisions
-- A rewind or a compaction silently drops some of them
-- Permission prompts break the flow, and approving by reflex is unsafe
-- Two weeks later: *why did this line change?*
+<div class="limits num tall">
+<div><b>1 <small>hour</small></b>of agent work</div>
+<div><b>10</b>open threads</div>
+<div><b>3</b>half-made decisions</div>
+</div>
 
 > Lesson: the bottleneck is human attention, not model speed.
 
 <!--
 Quick show of hands: who had a session go off track after a compaction?
-The agent is fast; the human is not. Long answers with many options make it easy to lose the thread.
-Worse, rewinds and context compaction can drop open items without anyone noticing. Weeks later, nobody can explain why a change was made.
+The agent produces a lot of text and a lot of options. After an hour you have ten open threads and three half-made decisions.
+A rewind or a compaction silently drops some of them. Permission prompts break the flow, and approving by reflex is unsafe.
+Two weeks later, nobody can explain why a line changed.
 -->
 
 ---
@@ -94,26 +110,20 @@ Worse, rewinds and context compaction can drop open items without anyone noticin
 <div class="cols w">
 <div>
 
-LLM code carries habits:
-
-- defensive `try/except` that hides errors
-- `hasattr` / `getattr` probing
-- filler comments that restate the code
-- long, repetitive tests
-- mocks everywhere
+<pre><code><span class="hl">try:</span>
+    n.optimize()
+<span class="hl">except Exception:</span>
+    <span class="hl"># Optimization failed, continue</span>
+    <span class="hl">pass</span>
+if <span class="hl">hasattr(n, "buses")</span>:
+    ...</code></pre>
 
 </div>
 <div>
 
-```python
-try:
-    n.optimize()
-except Exception:
-    # Optimization failed, continue
-    pass
-if hasattr(n, "buses"):
-    ...
-```
+- errors hidden by `try/except`
+- `hasattr` probing
+- comments that restate the code
 
 </div>
 </div>
@@ -122,6 +132,7 @@ if hasattr(n, "buses"):
 
 <!--
 The code looks fine at first glance. But it has habits that hurt in a modelling code base: swallowed solver errors, attribute probing, comments that say nothing.
+Other habits: long, repetitive tests and mocks everywhere.
 And if you ask the same agent to review its own work, it mostly agrees with itself.
 -->
 
@@ -132,13 +143,16 @@ And if you ask the same agent to review its own work, it mostly agrees with itse
 ## Three limits, three answers
 
 <div class="limits tall">
-<div><b>Context</b><p>Make the budget visible, orchestrate sub-agents, write the bulk to files</p><p><code>context-warn.sh</code> <code>sub-*</code> <code>plan-*</code></p></div>
-<div><b>Attention</b><p>Skimmable output, a ledger, traceable outcomes, fewer prompts</p><p><code>standard.md</code> <code>ledger.py</code> <code>settings.json</code></p></div>
-<div><b>Trust</b><p>Rules for the writer, a separate reviewer</p><p><code>CLAUDE.md</code> <code>review-*</code> <code>implement-review-revise</code></p></div>
+<div><b>Context</b>Visible budget, sub-agents, files<div class="chips"><code>context-warn.sh</code> <code>sub-*</code> <code>plan-*</code></div></div>
+<div><b>Attention</b>Skimmable output, a ledger<div class="chips"><code>standard.md</code> <code>ledger.py</code> <code>settings.json</code></div></div>
+<div><b>Trust</b>Rules, a separate reviewer<div class="chips"><code>CLAUDE.md</code> <code>review-*</code></div></div>
 </div>
 
 <!--
 This is the map for the rest of the talk. Each recommendation answers one limit, and each lives in a plain file you can copy.
+Context: make the budget visible, orchestrate sub-agents, write the bulk to files.
+Attention: skimmable output, a ledger, traceable outcomes, fewer permission prompts.
+Trust: rules for the writer, a separate reviewer, the implement-review-revise loop.
 -->
 
 ---
@@ -149,20 +163,19 @@ This is the map for the rest of the talk. Each recommendation answers one limit,
 ## Where recommendations live: `~/.claude`
 
 <div class="anat">
-<div class="box"><b><code>CLAUDE.md</code></b>House rules for every project: Python style, git, delegation</div>
-<div class="box"><b><code>output-styles/</code></b>How the agent talks: <code>standard.md</code></div>
-<div class="box wide"><b><code>settings.json</code></b>Default model <code>opus</code>, <span class="n">60</span> allow rules for shell commands, plugins, status line, hooks</div>
-<div class="box hook"><b><code>hooks/</code></b><code>context-warn.sh</code> on Stop, <code>ledger.py</code> on prompt, stop and compact</div>
-<div class="box"><b><code>agents/</code></b><code>implement-review-revise</code> lead agent</div>
-<div class="box"><b><code>statusline-command.sh</code></b>Model, branch, context meter, ledger link</div>
-<div class="box"><b><code>skills/</code></b><span class="n">36</span> skills, invoked by name, e.g. <code>/git-commit</code></div>
-<div class="box wide"><b>Skill groups by prefix</b><code>plan-</code> <code>sub-</code> <code>review-</code> <code>git-</code> <code>pr-</code> <code>issue-</code> <code>ci-</code> <code>code-</code> <code>doc-</code></div>
-<div class="box wide"><b>Why it pays off</b>Skills encode team workflows; the allowlist cuts permission prompts</div>
+<div><b><code>CLAUDE.md</code></b>House rules for every project</div>
+<div><b><code>output-styles/</code></b>How the agent talks</div>
+<div><b><code>settings.json</code></b><span class="n">60</span> allow rules, hooks</div>
+<div class="hot"><b><code>hooks/</code></b><code>context-warn.sh</code> <code>ledger.py</code></div>
+<div><b><code>agents/</code></b><code>implement-review-revise</code></div>
+<div><b><code>statusline-command.sh</code></b>Context meter, ledger link</div>
+<div class="wide"><b><code>skills/</code></b><span class="n">36</span> skills<div class="chips"><code>plan-</code> <code>sub-</code> <code>review-</code> <code>git-</code> <code>pr-</code> <code>issue-</code> <code>ci-</code> <code>code-</code> <code>doc-</code></div></div>
 </div>
 
 <!--
-Claude Code reads seven kinds of files. CLAUDE.md holds the house rules, the output style sets the voice, settings.json wires everything together.
-Hooks are small scripts that run on events. Skills are the bulk: 36 packaged instructions, grouped by prefix so they sort together.
+Claude Code reads seven kinds of files. CLAUDE.md holds the house rules: Python style, git, delegation. The output style standard.md sets the voice. settings.json wires everything together: default model opus, 60 allow rules for shell commands, plugins, status line and hooks.
+Hooks are small scripts that run on events: context-warn.sh on Stop, ledger.py on prompt, stop and compact. The status line shows model, branch, context meter and ledger link.
+Skills are the bulk: 36 packaged instructions, invoked by name like /git-commit, grouped by prefix as shown so they sort together. Skills encode team workflows; the allowlist cuts permission prompts.
 -->
 
 ---
@@ -173,107 +186,98 @@ Hooks are small scripts that run on events. Skills are the bulk: 36 packaged ins
 ## Recommendation: make the budget visible
 
 <div class="meter"><span class="g"></span><span class="y"></span><span class="r"></span></div>
-<div class="scale"><span>0</span><span>100k: yellow</span><span>150k: red, warning</span></div>
+<div class="scale"><span>0</span><span>100k</span><span>150k warn</span><span>+25k</span></div>
 
-<div class="cols">
-<div>
-
-### Warning
-- `hooks/context-warn.sh` runs on **Stop**
-- Warns at **150k** tokens, then every **25k**
-- Suggests `/compact`, `/clear` or a sub-agent
 - Status line: green, yellow at 2/3, red at the limit
-
-</div>
-<div>
-
-### Model routing
-- **Opus**: default, day-to-day work
-- **Sonnet**: simple, well-scoped sub-tasks
-- **Fable**: hard problems and planning
-- Reviews prefer Opus to save tokens
-
-</div>
-</div>
+- `hooks/context-warn.sh` warns at **150k**, then every **25k**
+- It suggests `/compact`, `/clear` or a sub-agent
 
 <!--
 First recommendation: make the budget visible. The status line shows a context meter that turns yellow at two thirds of the threshold and red at 150k.
-The Stop hook then posts a warning and repeats it every 25k tokens. The model choice is the second lever: Opus by default, Sonnet for cheap sub-tasks, Fable for hard ones.
+The Stop hook context-warn.sh then posts a warning and repeats it every 25k tokens.
+-->
+
+---
+
+<!-- header: 'Context: route' -->
+
+## Recommendation: pick the model per task
+
+<div class="limits tall">
+<div class="hot"><b>Opus</b>default, day-to-day work</div>
+<div><b>Sonnet</b>simple, well-scoped sub-tasks</div>
+<div><b>Fable</b>hard problems and planning</div>
+</div>
+
+<!--
+The model choice is the second lever on the budget. Opus by default, Sonnet for cheap sub-tasks, Fable for hard ones.
+Reviews prefer Opus to save tokens.
 -->
 
 ---
 
 <!-- header: 'Context: orchestrate' -->
 
-## Recommendation: the main agent decides and orchestrates
+## Recommendation: the main agent orchestrates
 
-<div class="cols w">
-<div>
-
-- The main agent plans, dispatches and decides
-- Sub-agents read and edit the files; the main agent gets the conclusion
-- CLAUDE.md: *for work that you can delegate to sub-agents, do so*
-- `sub-run`, `sub-this`: hand a task to a sub-agent
-- `sub-implement`: run the full loop on the right
-
+<div class="flow">
+<div class="st hot"><b>main agent</b>plans, decides</div>
+<div class="ar">→</div>
+<div class="grp">
+<p>sub-agents read and edit the files</p>
+<div class="row">
+<div class="st"><b>implementer</b>edits, adds tests</div>
+<div class="st"><b>reviewer</b>evidence</div>
+<div class="st"><b>reviser</b>fixes</div>
 </div>
-<div>
-
-<div class="flow" style="flex-direction:column; align-items:stretch">
-<div class="st lead">implement-review-revise<small>lead, coordinates only</small></div>
-<div class="st">implementer<small>edits, adds tests</small></div>
-<div class="st">reviewer<small>evidence, must-fix or nice-to-have</small></div>
-<div class="st">reviser<small>fixes task-related issues</small></div>
+</div>
+<div class="ar">→</div>
+<div class="st"><b>report</b>back to the main agent</div>
 </div>
 
-<p class="small">Max <strong>2</strong> rounds. Report ≤ <strong>300</strong> words.</p>
-
-</div>
+<div class="limits num two" style="margin-top:var(--gap)">
+<div><b>2</b>rounds at most</div>
+<div><b>300</b>words at most in the report</div>
 </div>
 
 <!--
 Second recommendation: the main agent is an orchestrator. It plans, hands tasks to sub-agents and makes decisions with you. Sub-agents read the files and burn their own context; the main agent only gets the conclusion.
-The implement-review-revise lead runs three sub-agents in sequence, at most two rounds, and returns a report of at most 300 words.
+CLAUDE.md says: for work that you can delegate to sub-agents, do so. sub-run and sub-this hand a task to a sub-agent.
+sub-implement runs the implement-review-revise lead. The lead coordinates only. The reviewer marks issues as must-fix or nice-to-have, with evidence. The reviser fixes task-related issues. At most two rounds, and the report has at most 300 words.
 -->
 
 ---
 
 <!-- header: 'Context: write it down' -->
 
-## Recommendation: put the bulk in files and fresh sessions
+## Recommendation: put the bulk in files
 
-- `review-*`: parallel reviewers, fleet scaled by change size
-  - ≤ 10 lines: 1 reviewer, ≤ 100 lines: 2, more: all 4, plus a coordinator
-- `plan-prepare`: the plan goes to `dev/<topic>/plan.md`, not into the chat
-- `plan-handoff`: a ≤ 40-line prompt to continue in a fresh session
-- `graft`: a code index; one query replaces many file reads
+<div class="flow">
+<div class="st"><b>long session</b>heavy context</div>
+<div class="ar">→</div>
+<div class="st"><b><code>plan.md</code></b><code>plan-prepare</code></div>
+<div class="ar">→</div>
+<div class="st hot"><b>handoff</b>≤ 40 lines, <code>plan-handoff</code></div>
+<div class="ar">→</div>
+<div class="st"><b>fresh session</b>clean context</div>
+</div>
 
-> Lesson: a fresh session with a good handoff beats a compacted old one.
+<p class="close">A fresh session with a good handoff beats a compacted old one.</p>
 
 <!--
-Reviews run as parallel agents, and the rubric scales the fleet with the size of the change, so a ten-line fix does not cost four reviewers.
-Plans live in files. When a session gets heavy, plan-handoff writes a prompt of at most 40 lines, and a fresh session starts clean.
+Plans live in files: plan-prepare writes the plan to dev/<topic>/plan.md, not into the chat.
+When a session gets heavy, plan-handoff writes a prompt of at most 40 lines, and a fresh session starts clean.
+graft is a code index: one query replaces many file reads.
 -->
 
 ---
 
 <!-- class: p4 -->
-<!-- header: 'Tracking: the voice' -->
+<!-- header: 'Attention: the voice' -->
 
 ## Recommendation: an output style for skimming
 
-<div class="cols">
-<div>
-
-- Answer first, then reasons
-- ASD-STE100 Simplified Technical English
-- ≤ 20 words per sentence, terms glossed
-- One sentence to repeat to a colleague
-- Numbered next steps as options
-- Reference codes you can cite later:
-  `F` finding, `C` correction, `I` related issue, `U` unrelated issue, `B` breaking change, `D` decision, `P` PR or issue, `G` goal
-
-</div>
+<div class="cols w">
 <div>
 
 <pre><code>Yes. The solve fails because bus "DE0 H2"
@@ -283,38 +287,36 @@ add_electrolysers() and adds a test.
 Should old networks get a default
 carrier on load? <span class="hl">[D1]</span>
 
-One sentence: the model failed because
-one bus had no carrier label.
+One sentence: one bus had no carrier label.
 
 1. Merge the fix.
 2. Decide <span class="hl">(D1)</span>.
 
-Ledger: +D1 Default carrier on load</code></pre>
+Ledger: <span class="hl">+D1</span> Default carrier on load</code></pre>
+
+</div>
+<div>
+
+- Answer first, then reasons
+- Short, plain sentences
+- Codes to cite later: <code>F</code> <code>D</code> <code>P</code> …
 
 </div>
 </div>
 
 <!--
-The output style changes how the agent talks, not what it does. Answer first, short sentences, every term explained.
+The output style changes how the agent talks, not what it does. Answer first, ASD-STE100 Simplified Technical English, at most 20 words per sentence, every term glossed. One sentence to repeat to a colleague, and numbered next steps as options.
 The codes in brackets are the trick: "do D1" an hour later is unambiguous for both sides.
+Codes: F finding, C correction, I related issue, U unrelated issue, B breaking change, D decision, P PR or issue, G goal.
 -->
 
 ---
 
-<!-- header: 'Tracking: the ledger' -->
+<!-- header: 'Attention: the ledger' -->
 
 ## Recommendation: a ledger that survives rewinds
 
-<div class="cols w">
-<div>
-
-- `hooks/ledger.py` tracks **G P D B I U** items
-- Rebuilt from the active transcript chain, so rewinds and compactions do not lose items
-- Re-injects the open items on every prompt
-- Blocks the reply if a code has no ledger entry
-- Status line links the file; `/ledger` opens it in Zed
-
-</div>
+<div class="cols">
 <div>
 
 <pre><code>Ledger: <span class="hl">+D3</span> Pick store format
@@ -323,76 +325,90 @@ The codes in brackets are the trick: "do D1" an hour later is unambiguous for bo
       | <span class="hl">~B1</span> new text
       | <span class="hl">&gt;U2</span> owner/repo#123</code></pre>
 
+</div>
 <div class="ops">
 <code>+</code><span>open, needs text</span>
 <code>-</code><span>resolve</span>
 <code>x</code><span>drop, with a reason</span>
 <code>~</code><span>replace the text</span>
-<code>&gt;</code><span>hand off to a GitHub issue, closes it here</span>
+<code>&gt;</code><span>hand off to a GitHub issue</span>
+</div>
 </div>
 
-</div>
+<div class="limits" style="margin-top:var(--gap)">
+<div><b>G P D B I U</b>items tracked</div>
+<div><b>Every prompt</b>open items re-injected</div>
+<div class="hot"><b>Blocks</b>a code with no entry</div>
 </div>
 
 <!--
-The ledger is a hook. Each reply ends with one delta line, and the hook folds those lines into a list of open items.
-It walks the live transcript chain, so a rewind removes exactly the items from the rewound turns. The arrow operator hands an item off to a GitHub issue and closes it here.
+The ledger is a hook, hooks/ledger.py. Each reply ends with one delta line, and the hook folds those lines into a list of open items.
+It is rebuilt from the active transcript chain, so a rewind removes exactly the items from the rewound turns, and compactions lose nothing.
+It re-injects the open items on every prompt, and blocks the reply if a code has no ledger entry. The arrow operator hands an item off to a GitHub issue and closes it here.
+The status line links the file; /ledger opens it in Zed.
 -->
 
 ---
 
-<!-- header: 'Tracking: habits' -->
+<!-- header: 'Attention: habits' -->
 
 ## Recommendation: make every outcome traceable
 
-- `plan-open-items`: wrap-up of open PRs, issues, decisions and cleanup
-- Agent reports end with **DECISIONS** and **DEFERRED** fields
-- Review issues carry `[task-related]` or `[drive-by]` tags
-- Work in the current worktree, so changes appear live in Zed
-- `plan-voice-handoff`: talk the session through in Claude Desktop
-
-> Lesson: nothing important should exist only in scrollback.
+<div class="limits tall">
+<div><b>Wrap-up</b>open PRs, issues, decisions, cleanup<div class="chips"><code>plan-open-items</code></div></div>
+<div><b>Agent reports</b>end with two fields<div class="chips"><code>DECISIONS</code> <code>DEFERRED</code></div></div>
+<div><b>Review tags</b>keep drive-bys out<div class="chips"><code>[task-related]</code> <code>[drive-by]</code></div></div>
+</div>
 
 <!--
-A few smaller habits. Every sub-agent report has a DECISIONS and a DEFERRED field, so nothing is silently skipped.
-Review findings are tagged, so drive-by issues do not creep into the change. For thinking time, the session can move to Claude Desktop and be talked through by voice.
+A few smaller habits. plan-open-items gives a wrap-up of open PRs, issues, decisions and cleanup.
+Every sub-agent report has a DECISIONS and a DEFERRED field, so nothing is silently skipped.
+Review findings are tagged, so drive-by issues do not creep into the change.
+Work in the current worktree, so changes appear live in Zed. For thinking time, plan-voice-handoff moves the session to Claude Desktop to talk it through by voice.
+Nothing important should exist only in scrollback.
 -->
 
 ---
 
 <!-- class: p5 -->
-<!-- header: 'Quality' -->
+<!-- header: 'Trust' -->
 
 ## Recommendation: counter the habits, split the roles
 
-<div class="cols">
+<div class="cols eq">
 <div>
 
-### Rules in `CLAUDE.md`
-- Fail fast, no gentle error handling
-- No comments in code
-- Typing annotations, no `hasattr`
-- Parametrized pytest, reuse fixtures
-- Mocks only at external boundaries
+<h3>Without rules</h3>
+
+<pre><code>try:
+    n.optimize()
+except Exception:
+    pass</code></pre>
 
 </div>
 <div>
 
-### Process
-- Writer and reviewer are different agents
-- The lead re-runs the tests itself
-- Review rubric: *signal over noise*, with explicit do-NOT-flag lists and evidence for every issue
-- `code-fix-bug`: failing test first
-- `issue-raise`: minimal reproducible example
+<h3>With <code>CLAUDE.md</code>: fail fast</h3>
+
+<pre><code>n.optimize()</code></pre>
 
 </div>
 </div>
 
-> Lesson: rules shape the writer; a separate reviewer catches what rules miss.
+<h3 style="margin-top:1.2em">Separate reviewers, scaled by change size</h3>
+
+<div class="limits num">
+<div><b>1</b>reviewer, ≤ 10 lines</div>
+<div><b>2</b>reviewers, ≤ 100 lines</div>
+<div class="hot"><b>4</b>reviewers and a coordinator, more</div>
+</div>
 
 <!--
-Each bad habit from the motivation has a rule against it in CLAUDE.md. Rules alone are not enough, so the process separates writer and reviewer.
-The review rubric is as much about what not to flag as what to flag, and every issue needs evidence or it is dropped.
+Each bad habit from the motivation has a rule against it in CLAUDE.md: fail fast, no gentle error handling, no comments in code, typing annotations, no hasattr, parametrized pytest, reuse fixtures, mocks only at external boundaries.
+Rules alone are not enough, so writer and reviewer are different agents, and the lead re-runs the tests itself. review-* runs parallel reviewers and scales the fleet with the size of the change.
+The review rubric is signal over noise: explicit do-NOT-flag lists, and evidence for every issue.
+code-fix-bug starts with a failing test; issue-raise needs a minimal reproducible example.
+Rules shape the writer; a separate reviewer catches what rules miss.
 -->
 
 ---
@@ -402,15 +418,16 @@ The review rubric is as much about what not to flag as what to flag, and every i
 
 ## Where to start
 
-1. Copy the output style: answer first, reference codes
-2. Add `context-warn.sh` and the context meter
-3. Pick one orchestration skill: `sub-run` or `sub-implement`
+<div class="limits num">
+<div><b>1</b>Copy the output style</div>
+<div><b>2</b>Add <code>context-warn.sh</code> and the meter</div>
+<div><b>3</b>Pick one: <code>sub-run</code> or <code>sub-implement</code></div>
+</div>
 
 <p class="close">An orchestrating main agent, written-down decisions, a second pair of eyes.</p>
-
-<p class="muted small">Every recommendation is a plain file in <code>~/.claude</code>. Copy any part into yours.</p>
 
 <!--
 You do not need all of it. Start with the output style and the context warning; they cost nothing and help on day one.
 Then add one orchestration skill and watch the sessions get smaller.
+Every recommendation is a plain file in ~/.claude. Copy any part into yours.
 -->

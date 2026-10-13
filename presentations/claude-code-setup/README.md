@@ -1,6 +1,6 @@
 # Keeping Claude Code focused, traceable and honest
 
-Marp deck built from `~/.claude` (README, CLAUDE.md, output style, hooks, agents, skills); 15-minute talk, 13 slides, speaker notes in HTML comments.
+Marp deck built from `~/.claude` (README, CLAUDE.md, output style, hooks, agents, skills); 15-minute talk, 16 slides, speaker notes in HTML comments.
 
 ```
 slides.md    # the deck
