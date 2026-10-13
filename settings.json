@@ -82,6 +82,10 @@
           {
             "type": "command",
             "command": "printf '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"live git branch: %s\"}}' \"$(git branch --show-current 2>/dev/null)\""
+          },
+          {
+            "type": "command",
+            "command": "uv run --script ~/.claude/hooks/ledger.py prompt"
           }
         ]
       }
@@ -92,6 +96,21 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/context-warn.sh"
+          },
+          {
+            "type": "command",
+            "command": "uv run --script ~/.claude/hooks/ledger.py stop"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --script ~/.claude/hooks/ledger.py compact"
           }
         ]
       }

@@ -56,3 +56,7 @@ skills/synced/
 feedback/
 state/
 policy-limits.json.stamp.json
+
+# Session ledger views (rendered by hooks/ledger.py)
+/ledger/
+__pycache__/

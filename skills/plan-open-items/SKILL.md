@@ -9,7 +9,7 @@ List everything from **this session** that is not yet closed. Do not report fini
 
 ## Gather
 
-1. Scan the whole conversation, including earlier summarized context. Collect every PR, issue, finding and `[I<n>]` / `[U<n>]` code.
+1. Start from the latest injected "Session ledger" in context. Then scan the whole conversation, including earlier summarized context, for anything the ledger misses: every PR, issue, finding and `[D<n>]` / `[I<n>]` / `[U<n>]` / `[B<n>]` / `[P<n>]` code.
 2. Check the live state of each referenced PR and issue with one `gh` call each: `gh pr view <n> --json state,title,url,reviewDecision,statusCheckRollup` or `gh issue view <n> --json state,title,url`. Drop items that are merged or closed, unless they belong to a section below.
 3. Check local leftovers: `git status --short`, `git stash list`, `git worktree list`, `git branch --no-merged`, running background tasks and monitors, scratch files you created.
 

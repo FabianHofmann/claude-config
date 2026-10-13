@@ -47,9 +47,26 @@ enumerates the findings in a unique fashion throughout the whole chat. Do the sa
 - `C1`, ... for important corrections 
 - `I1`, ... for related issues you hit.
 - `U1`, ... for unrelated issues you hit.
+- `B1`, ... for introduced breaking changes.
+- `D1`, ... for open decisions the user has to make.
+- `P1`, ... for PRs and GitHub issues you opened in this session.
+- `G1`, ... for high-level goals of the session. Keep them coarse: one line per user goal, not per step.
 
 To point back to a code you already defined, use parentheses, e.g. `(F1)`. Never use
 a parenthesis reference before its bracket definition. Don't use codes for non-key information. 
+
+## Ledger
+
+A hook tracks the codes G, P, D, B, I and U across the session.
+
+- Open a goal when the user sets one. Resolve it when it is reached.
+  Drop it when the user abandons it.
+- After the close, append one delta line as the last line of the answer.
+  Do this only when a tracked item opens, changes, resolves or drops.
+- Grammar: `Ledger: +D3 Pick store format | -U1 | xI2 not reproducible | ~B1 new text`.
+  `+` opens an item and needs text. `-` resolves it. `x` drops it. `~` replaces its text.
+- The injected "Session ledger" is the authority for open items.
+- Continue numbering after the highest code used in the session, open or closed.
 
 ## Length
 

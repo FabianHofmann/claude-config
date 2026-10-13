@@ -33,6 +33,13 @@ if [ "$CTX" -gt 0 ]; then
   fi
 fi
 
+LEDGER="$HOME/.claude/ledger/$(echo "$INPUT" | jq -r '.session_id').md"
+if [ -f "$LEDGER" ]; then
+  printf "  \033]8;;file://%s\033\\\\\033[35m📋 ledger\033[0m\033]8;;\033\\\\" "$LEDGER"
+else
+  printf "  \033[2m📋 no ledger\033[0m"
+fi
+
 # Claude-Flow integration
 FLOW_DIR="$CWD/.claude-flow"
 
