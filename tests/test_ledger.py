@@ -189,12 +189,12 @@ def test_stop(tmp_path: Path, message: str, active: bool, blocked: bool) -> None
 def test_view_file(tmp_path: Path) -> None:
     t = Transcript()
     t.user()
-    t.assistant("Ledger: +D1 a | +U1 b | +I1 c")
+    t.assistant("Ledger: +D1 a | +U1 b | +I1 c | +U2 d")
     t.user()
-    result = run("stop", t, tmp_path, last_assistant_message="Ledger: -U1 | xI1 gone", stop_hook_active=False)
+    result = run("stop", t, tmp_path, last_assistant_message="Ledger: -U1 | xI1 gone | >U2 o/r#7", stop_hook_active=False)
     assert result.returncode == 0, result.stderr
     view = (tmp_path / ".claude" / "ledger" / "s1.md").read_text()
-    assert view == f"{HEADER}\nD1: a\n\nResolved/dropped:\nI1 (dropped): gone\nU1 (resolved): b\n"
+    assert view == f"{HEADER}\nD1: a\n\nResolved/dropped:\nI1 (dropped): gone\nU1 (resolved): b\nU2 (on GitHub): https://github.com/o/r/issues/7\n"
 
 
 @pytest.mark.parametrize(
