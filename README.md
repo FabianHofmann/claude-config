@@ -104,6 +104,7 @@ hooks/                 Scripts the agent runs on events
 skills/                Reusable task instruction sets
 statusline-command.sh  The terminal status bar
 teams/                 Multi-agent team configuration
+presentations/         Talks about this setup (Marp decks)
 policy-limits.json     Remote-control and web-setup restrictions
 ```
 
