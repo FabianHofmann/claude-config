@@ -12,10 +12,10 @@ from typing import Any
 HEADER = "Session ledger (open items, source of truth for codes):"
 EMPTY = "Session ledger: no open items."
 ORDER = "GPDBIU"
-STATUS = {"+": "open", "-": "resolved", "x": "dropped"}
-ITEM = re.compile(r"([+\-x~])([GPDBIU]\d+)(?:\s+(.*))?")
+STATUS = {"+": "open", "-": "resolved", "x": "dropped", ">": "on GitHub"}
+ITEM = re.compile(r"([+\-x~>])([GPDBIU]\d+)(?:\s+(.*))?")
 DEFINED = re.compile(r"\[([GPDBIU]\d+)\]")
-GRAMMAR = "Ledger: +D3 text | -U1 | xI2 reason | ~B1 new text"
+GRAMMAR = "Ledger: +D3 text | -U1 | xI2 reason | ~B1 new text | >U2 owner/repo#123"
 
 Record = dict[str, Any]
 Op = tuple[str, str, str]
@@ -76,7 +76,7 @@ def parse(text: str) -> tuple[list[Op], list[str]]:
         for item in line.removeprefix("Ledger:").split(" | "):
             item = item.strip()
             match = ITEM.fullmatch(item)
-            if match is None or (match[1] in "+~" and not match[3]):
+            if match is None or (match[1] in "+~>" and not match[3]):
                 bad.append(item)
                 continue
             ops.append((match[1], match[2], match[3] or ""))

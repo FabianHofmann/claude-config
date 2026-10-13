@@ -6,3 +6,5 @@ description: Raise an issue on GH for the discussed topic. Use when creating Git
 # Create GitHub Issue
 
 Raise an issue on GH for the discussed topic. Be concise, not verbose. Follow the issue template (if there is one). If there is none, make sure you add a minimal reproducable example anyway. Insert a note at the top that the content was created by AI.
+
+If the issue covers a ledger item (e.g. `U2`, `I1`), hand it off in the delta line of your answer: `Ledger: >U2 owner/repo#123`.

@@ -63,8 +63,9 @@ A hook tracks the codes G, P, D, B, I and U across the session.
   Drop it when the user abandons it.
 - After the close, append one delta line as the last line of the answer.
   Do this only when a tracked item opens, changes, resolves or drops.
-- Grammar: `Ledger: +D3 Pick store format | -U1 | xI2 not reproducible | ~B1 new text`.
+- Grammar: `Ledger: +D3 Pick store format | -U1 | xI2 not reproducible | ~B1 new text | >U2 owner/repo#123`.
   `+` opens an item and needs text. `-` resolves it. `x` drops it. `~` replaces its text.
+  `>` hands it off to a GitHub issue and needs the issue reference. This closes the item.
 - The injected "Session ledger" is the authority for open items.
 - Continue numbering after the highest code used in the session, open or closed.
 

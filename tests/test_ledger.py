@@ -78,6 +78,8 @@ def context(result: subprocess.CompletedProcess[str]) -> str | None:
         (["Ledger: +U1 a | +D1 b | +P1 c | +I1 d | +B1 e | +G1 f"], [HEADER, "G1: f", "P1: c", "D1: b", "B1: e", "I1: d", "U1: a"]),
         (["Ledger: +D1 a | +D2 b", "Ledger: -D1 | xD2 gone"], None),
         (["Ledger: +B1 old", "text\nLedger: ~B1 new"], [HEADER, "B1: new"]),
+        (["Ledger: +U1 a | +I1 b", "Ledger: >U1 org/repo#12"], [HEADER, "I1: b"]),
+        (["Ledger: +U1 a | >U2"], [HEADER, "U1: a"]),
         (["Ledger: +D10 ten | +D2 two"], [HEADER, "D2: two", "D10: ten"]),
         (["mentions Ledger: +D1 inline", "Ledger: +D1"], None),
     ],
