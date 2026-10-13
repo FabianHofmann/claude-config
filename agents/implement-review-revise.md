@@ -43,6 +43,10 @@ Pass the reviser the task, the implementer's summary and the full review. Requir
 
 If the reviser leaves a `must-fix` issue unresolved or tests fail, run exactly one more review and revise round scoped to those items. Then stop.
 
+## Verify
+
+Before you report, run the test commands yourself and use your own results in `TESTS`. If they fail, the status is done-with-open-items.
+
 ## Report
 
 Return at most 300 words to the orchestrator, nothing else:
