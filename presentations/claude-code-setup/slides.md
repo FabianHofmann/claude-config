@@ -10,16 +10,16 @@ footer: 'Claude Code: lessons learned'
 <!-- _paginate: false -->
 <!-- _footer: '' -->
 
-<div class="legend"><span>Why</span><span>Anatomy</span><span>Context</span><span>Attention</span><span>Trust</span><span>Adopt</span></div>
+<div class="legend"><span>Why</span><span>Anatomy</span><span>Context</span><span>Attention</span><span>Trust</span><span>Team</span><span>Adopt</span></div>
 
 # Keeping LLMs focused, traceable and efficient
 
-<p class="sub">Lessons learned on how to setup Claude Code for day-to-day work</p>
+<p class="sub">Lessons learned on how to setup Claude Code for day-to-day work, alone and in a team</p>
 
 <p class="who">Fabian Hofmann, Open Energy Transition</p>
 
 <!--
-Fifteen minutes of lessons learned from daily work with Claude Code, and what we recommend as a result. Every recommendation maps to plain files in ~/.claude that you can copy.
+Twenty minutes of lessons learned from daily work with Claude Code, alone and in a team, and what we recommend as a result. Most recommendations map to plain files in ~/.claude that you can copy.
 The bar at the top of each slide is the talk timeline: grey is ahead, amber is where we are.
 -->
 
@@ -236,7 +236,7 @@ Reviews prefer Opus to save tokens.
 </div>
 
 <div class="limits num two" style="margin-top:var(--gap)">
-<div><b>2</b>rounds at most</div>
+<div><b>X</b>rounds at most</div>
 <div><b>300</b>words at most in the report</div>
 </div>
 
@@ -254,8 +254,6 @@ sub-implement runs the implement-review-revise lead. The lead coordinates only. 
 
 <div class="flow">
 <div class="st"><b>long session</b>heavy context</div>
-<div class="ar">→</div>
-<div class="st"><b><code>plan.md</code></b><code>plan-prepare</code></div>
 <div class="ar">→</div>
 <div class="st hot"><b>handoff</b>≤ 40 lines, <code>plan-handoff</code></div>
 <div class="ar">→</div>
@@ -414,6 +412,155 @@ Rules shape the writer; a separate reviewer catches what rules miss.
 ---
 
 <!-- class: p6 -->
+<!-- header: 'Team' -->
+
+## Cheap to write, expensive to read
+
+<div class="cols eq">
+<div>
+
+<h3>One diff, many readers</h3>
+<div class="grow cost">
+<p style="--k:.5">generate</p>
+<p style="--k:3.6">reviewer</p>
+<p style="--k:4.3">maintainer</p>
+<p style="--k:5">future you</p>
+</div>
+
+</div>
+<div>
+
+<h3>The three limits, now shared</h3>
+<div class="map">
+<span>your attention</span><i>→</i><b>their attention</b>
+<span>plausible ≠ good</span><i>→</i><b>what you share must be good</b>
+<span>you decide</span><i>→</i><b>the team designs together</b>
+</div>
+
+</div>
+</div>
+
+> Lesson: your context budget becomes everyone's budget.
+
+<!--
+So far, one person and one agent. In a team, the same three limits come back, but now they are shared.
+The agent writes in seconds. Every reader pays again: the reviewer, the maintainer, and you in six months.
+Your attention becomes their attention. Plausible is not good becomes: what you share must be good. And the decisions move from you alone to the team.
+-->
+
+---
+
+<!-- header: 'Team: shared spaces' -->
+
+## Recommendation: do not bloat shared spaces
+
+<div class="cols eq">
+<div>
+
+<h3>Generated PR body</h3>
+
+<pre><code><span class="hl">## Summary</span>
+This PR introduces a <span class="hl">comprehensive,</span>
+<span class="hl">robust</span> overhaul of carrier handling.
+<span class="hl">## Changes</span>
+- Added <span class="hl">robust</span> error handling
+- <span class="hl">Enhanced</span> maintainability …</code></pre>
+
+</div>
+<div>
+
+<h3>Curated PR body</h3>
+
+<pre><code>Set carrier on electrolyser buses.
+Fixes #412: solve failed on "DE0 H2".
+Adds test_electrolyser_carrier.
+No breaking change.</code></pre>
+
+</div>
+</div>
+
+<div class="limits" style="margin-top:var(--gap)">
+<div><b>PRs</b>short, squashed<div class="chips"><code>pr-raise</code> <code>git-commit</code></div></div>
+<div><b>Issues</b>one per problem, an MRE<div class="chips"><code>issue-raise</code></div></div>
+<div class="hot"><b>Reviews</b>filtered, no transcripts</div>
+</div>
+
+<!--
+GitHub is a shared space, and generated text bloats it fast. Left: a typical generated PR body. Right: the same change in four lines.
+pr-raise keeps the body short. git-commit writes at most five lines. issue-raise files one issue per problem, always with a minimal reproducible example.
+Never paste an agent transcript into a PR or issue. Filter AI review comments before you post them, and squash noisy commits.
+-->
+
+---
+
+<!-- header: 'Team: documents' -->
+
+## Recommendation: share less, share better
+
+<div class="cols">
+<div>
+
+<h3>What reaches the team</h3>
+<div class="limits stack">
+<div class="hot"><b>Hand-written</b>best, rarest</div>
+<div><b>Curated &amp; minimal</b>agent draft <div class="chips"><code>plan-prepare</code></div></div>
+<div class="off"><b>Raw generated</b>never shared</div>
+</div>
+
+</div>
+<div>
+
+<h3>A design doc, four parts</h3>
+
+<pre><code><span class="hl">## Problem</span>
+   one paragraph
+<span class="hl">## Decision</span>
+   one file per run, netCDF
+<span class="hl">## Worked example</span>
+   a 3-bus network, end to end
+<span class="hl">## Rejected alternatives</span>
+   Parquet: no nested data</code></pre>
+
+</div>
+</div>
+
+<p class="close">The agent drafts, a human cuts and owns it.</p>
+
+<!--
+Not everything the agent writes should reach the team. Hand-written is best. Curated and minimal is fine. Raw generated text is never shared.
+A design doc has four parts: the problem, the decision, one worked example, and the alternatives we rejected and why.
+plan-prepare writes the first draft. A human cuts it to the essentials and puts their name on it.
+-->
+
+---
+
+<!-- header: 'Team: decisions' -->
+
+<span class="tag">practice, not config</span>
+
+## Recommendation: we are designers now, meet on decisions
+
+<h3>Implementation is cheap. The risk moves from bad code to design drift.</h3>
+
+<div class="flow">
+<pre><code>Ledger: <span class="hl">+D4</span> Store format
+      | <span class="hl">+D5</span> Carrier naming
+      | <span class="hl">+D6</span> Drop the v1 API</code></pre>
+<div class="ar">→</div>
+<div class="st hot"><b>Design meeting, 30 min</b>1. <code>D4</code> Store format<br>2. <code>D5</code> Carrier naming<br>3. <code>D6</code> Drop the v1 API</div>
+</div>
+
+<p class="close">Design in a meeting, code review in writing.</p>
+
+<!--
+This one is a practice, not a file. The agent makes implementation cheap, so the risk moves: less bad code, more design drift. Five people, five agents, five slightly different designs.
+The ledger already collects the open decisions as D items. Bring them to a short meeting and decide them together.
+Then design is settled in the meeting, and code review stays in writing, on GitHub.
+-->
+
+---
+
+<!-- class: p7 -->
 <!-- header: 'Adopt' -->
 
 ## Where to start
@@ -422,6 +569,7 @@ Rules shape the writer; a separate reviewer catches what rules miss.
 <div><b>1</b>Copy the output style</div>
 <div><b>2</b>Add <code>context-warn.sh</code> and the meter</div>
 <div><b>3</b>Pick one: <code>sub-run</code> or <code>sub-implement</code></div>
+<div class="wide">In a team: one design doc, one short meeting, short PRs.</div>
 </div>
 
 <p class="close">An orchestrating main agent, written-down decisions, a second pair of eyes.</p>
@@ -429,5 +577,6 @@ Rules shape the writer; a separate reviewer catches what rules miss.
 <!--
 You do not need all of it. Start with the output style and the context warning; they cost nothing and help on day one.
 Then add one orchestration skill and watch the sessions get smaller.
-Every recommendation is a plain file in ~/.claude. Copy any part into yours.
+Most recommendations are plain files in ~/.claude. Copy any part into yours.
+In a team, start with one design doc, one short meeting and short PRs.
 -->

@@ -53,13 +53,14 @@ section {
     var(--paper);
 }
 
-/* timeline stops: minutes per section (5, 2, 3, 3, 2, 1 of 16) */
-section.p1 { --a: 0;      --b: .3125; }
-section.p2 { --a: .3125;  --b: .4375; }
-section.p3 { --a: .4375;  --b: .625; }
-section.p4 { --a: .625;   --b: .8125; }
-section.p5 { --a: .8125;  --b: .9375; }
-section.p6 { --a: .9375;  --b: 1; }
+/* timeline stops: minutes per section (5, 2, 3, 3, 2, 4, 1 of 20) */
+section.p1 { --a: 0;    --b: .25; }
+section.p2 { --a: .25;  --b: .35; }
+section.p3 { --a: .35;  --b: .5; }
+section.p4 { --a: .5;   --b: .65; }
+section.p5 { --a: .65;  --b: .75; }
+section.p6 { --a: .75;  --b: .95; }
+section.p7 { --a: .95;  --b: 1; }
 
 header {
   font-family: var(--serif); font-style: italic; font-size: 19px; font-weight: 500;
@@ -125,7 +126,7 @@ section.lead::after { content: none; }
 section.lead h1 { color: var(--ink); }
 section.lead .sub { font-size: 1.15em; color: var(--ink-soft); max-width: 32em; margin-top: .3em; }
 section.lead .who { font-size: .82em; color: var(--sage-ink); margin-top: 2.2em; font-weight: 600; }
-section.lead .legend { position: absolute; left: 80px; right: 80px; top: 48px; display: grid; grid-template-columns: 5fr 2fr 3fr 3fr 2fr 1fr; font-family: var(--serif); font-style: italic; font-variation-settings: "SOFT" 100; font-size: 18px; color: var(--sage-ink); }
+section.lead .legend { position: absolute; left: 80px; right: 80px; top: 48px; display: grid; grid-template-columns: 5fr 2fr 3fr 3fr 2fr 4fr 1fr; font-family: var(--serif); font-style: italic; font-variation-settings: "SOFT" 100; font-size: 18px; color: var(--sage-ink); }
 section.lead .legend span { border-left: 2px solid var(--sage); padding-left: .45em; }
 
 /* box family: .limits (row of cards), .anat (grid of cards), .flow (cards with arrows) */
@@ -149,6 +150,13 @@ section.lead .legend span { border-left: 2px solid var(--sage); padding-left: .4
 .limits.num b { font-size: 2.4em; font-weight: 600; font-variation-settings: "SOFT" 100, "opsz" 144; line-height: 1; color: var(--clay); letter-spacing: -0.02em; }
 .limits.num b small { font-family: var(--font); font-size: .34em; font-weight: 600; color: var(--ink-soft); letter-spacing: 0; }
 .limits.two { grid-template-columns: 1fr 1fr; }
+.limits.stack { grid-template-columns: 1fr; gap: 12px; }
+.limits.stack > div { padding: .55em .9em; }
+.limits.stack b { display: inline; margin-right: .4em; }
+.limits > div.off { background: none; box-shadow: none; border: 2px dashed var(--line); }
+.limits > div.off b { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: var(--clay); }
+.limits > div.wide { grid-column: 1 / -1; background: var(--sage-tint); border-color: transparent; box-shadow: none; }
+.limits > div.wide { padding: .5em .9em; color: var(--ink); }
 
 .anat { grid-template-columns: 1fr 1.15fr 1.15fr; }
 .anat > div.wide { grid-column: 1 / -1; background: var(--sage-tint); border-color: transparent; box-shadow: none; }
@@ -165,6 +173,8 @@ section.lead .legend span { border-left: 2px solid var(--sage); padding-left: .4
 .flow .st { flex: 1; }
 .flow b { font-size: 1.08em; }
 .flow .ar { align-self: center; color: var(--clay); font-weight: 600; font-size: 1.4em; }
+.flow > pre { flex: 1.2; align-self: center; }
+.flow pre code { background: none; font-size: 1em; padding: 0; }
 .flow .grp { flex: 3.4; display: flex; flex-flow: column; gap: .45em; background: var(--sage-tint); border-radius: 22px; padding: .55em; }
 .flow .grp > .row { display: flex; gap: .5em; align-items: stretch; flex: 1; }
 .flow .grp > p { margin: 0 0 0 .3em; color: var(--sage-ink); font-weight: 600; font-size: .9em; }
@@ -177,6 +187,19 @@ section.lead .legend span { border-left: 2px solid var(--sage); padding-left: .4
   background: linear-gradient(to left, var(--clay) 0 calc(100% / var(--k)), var(--sage) 0);
 }
 .grow p:first-child::after { background: var(--clay); }
+
+/* reading cost: one bar per reader, clay = generate, sage = read */
+.grow.cost p { grid-template-columns: 7em 1fr; }
+.grow.cost p::after { background: var(--sage); }
+.grow.cost p:first-child::after { background: var(--clay); }
+
+/* mapping rows: from -> to */
+.map { display: grid; grid-template-columns: auto auto 1fr; gap: .5em .6em; align-items: baseline; }
+.map span { color: var(--ink-soft); }
+.map i { font-style: normal; color: var(--clay); font-weight: 600; }
+.map b { font-weight: 600; color: var(--ink); }
+
+.tag { position: absolute; top: 44px; right: 80px; font-family: var(--mono); font-size: 15px; color: var(--sage-ink); border: 1.5px solid var(--sage); border-radius: 999px; padding: .1em .7em; }
 
 /* context meter on a 0..200k scale in 25k steps */
 .meter { display: grid; grid-template-columns: 4fr 2fr 2fr; height: 40px; border-radius: 999px; overflow: hidden; margin-top: .3em; box-shadow: var(--shadow); }
