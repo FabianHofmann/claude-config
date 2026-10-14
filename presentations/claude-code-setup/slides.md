@@ -12,7 +12,7 @@ footer: 'Claude Code: lessons learned'
 
 <div class="legend"><span>Why</span><span>Anatomy</span><span>Context</span><span>Attention</span><span>Trust</span><span>Team</span><span>Adopt</span></div>
 
-# Keeping LLMs focused, traceable and efficient
+# Working with Claude Code
 
 <p class="sub">Lessons learned on how to setup Claude Code for day-to-day work, alone and in a team</p>
 
@@ -28,7 +28,7 @@ The bar at the top of each slide is the talk timeline: grey is ahead, amber is w
 <!-- class: p1 -->
 <!-- header: 'Why' -->
 
-## The agent scales. Three things do not.
+## What does not scale
 
 <div class="limits tall">
 <div><b>Context</b>what the model can hold</div>
@@ -140,7 +140,7 @@ And if you ask the same agent to review its own work, it mostly agrees with itse
 
 <!-- header: 'Why: overview' -->
 
-## Three limits, three answers
+## Which fix for which limit?
 
 <div class="limits tall">
 <div><b>Context</b>Visible budget, sub-agents, files<div class="chips"><code>context-warn.sh</code> <code>sub-*</code> <code>plan-*</code></div></div>
@@ -160,7 +160,7 @@ Trust: rules for the writer, a separate reviewer, the implement-review-revise lo
 <!-- class: p2 -->
 <!-- header: 'Anatomy' -->
 
-## Where recommendations live: `~/.claude`
+## The `~/.claude` folder
 
 <div class="anat">
 <div><b><code>CLAUDE.md</code></b>House rules for every project</div>
