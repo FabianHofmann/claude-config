@@ -87,8 +87,8 @@ The bars: amber is the new part of each turn, navy is the history that is sent a
 ## Limit 2: your attention
 
 <div class="limits num tall">
-<div><b>1 <small>hour</small></b>of agent work</div>
-<div><b>10</b>open threads</div>
+<div><b>1 <small>hour</small></b>of agent work, in one session</div>
+<div><b>10</b>open loose ends</div>
 <div><b>3</b>half-made decisions</div>
 </div>
 
@@ -96,7 +96,7 @@ The bars: amber is the new part of each turn, navy is the history that is sent a
 
 <!--
 Quick show of hands: who had a session go off track after a compaction?
-The agent produces a lot of text and a lot of options. After an hour you have ten open threads and three half-made decisions.
+The agent produces a lot of text and a lot of options. After an hour in one session you have ten open loose ends and three half-made decisions.
 A rewind or a compaction silently drops some of them. Permission prompts break the flow, and approving by reflex is unsafe.
 Two weeks later, nobody can explain why a line changed.
 -->
