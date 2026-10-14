@@ -236,8 +236,8 @@ Reviews prefer Opus to save tokens.
 </div>
 
 <div class="limits num two" style="margin-top:var(--gap)">
-<div><b>X</b>rounds at most</div>
-<div><b>300</b>words at most in the report</div>
+<div><b>x</b>rounds at most</div>
+<div><b>y</b>words at most in the report</div>
 </div>
 
 <!--
@@ -530,6 +530,44 @@ Never paste an agent transcript into a PR or issue. Filter AI review comments be
 Not everything the agent writes should reach the team. Hand-written is best. Curated and minimal is fine. Raw generated text is never shared.
 A design doc has four parts: the problem, the decision, one worked example, and the alternatives we rejected and why.
 plan-prepare writes the first draft. A human cuts it to the essentials and puts their name on it.
+-->
+
+---
+
+<!-- header: 'Team: documents' -->
+
+## Recommendation: docs state the code as it is
+
+<div class="cols eq">
+<div>
+
+<h3>Relative: tells a change</h3>
+
+<pre><code>Results are <span class="hl">now</span> stored as netCDF
+<span class="hl">instead of</span> Parquet. The <span class="hl">new</span>
+writer <span class="hl">replaces</span> the old CSV export.</code></pre>
+
+</div>
+<div>
+
+<h3>Absolute: tells the state</h3>
+
+<pre><code>Results are stored as netCDF,
+one file per run.</code></pre>
+
+</div>
+</div>
+
+<div class="limits" style="margin-top:var(--gap)">
+<div class="hot"><b>Docs</b>the current state, only</div>
+<div><b>Commits, PRs</b>the change<div class="chips"><code>git-commit</code> <code>pr-raise</code></div></div>
+<div><b>Release notes</b>the history<div class="chips"><code>doc-release-notes</code></div></div>
+</div>
+
+<!--
+Agents write docs from the diff they just made, so they write "now", "new", "instead of", "previously". The reader of the docs never saw that diff.
+Docs state the code as it is today, as absolute information. Every sentence must still be true when nobody remembers the old version.
+The change belongs in the commit and the PR. The history belongs in the release notes.
 -->
 
 ---
