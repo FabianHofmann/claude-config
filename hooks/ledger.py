@@ -116,12 +116,16 @@ def view(state: State) -> str:
     return "\n".join(lines) + "\n"
 
 
-def write_view(session_id: str, state: State) -> None:
+def session_file(session_id: str, suffix: str) -> Path:
     if Path(session_id).name != session_id:
         fail(f"invalid session_id {session_id!r}")
     directory = Path.home() / ".claude" / "ledger"
     directory.mkdir(parents=True, exist_ok=True)
-    (directory / f"{session_id}.md").write_text(view(state))
+    return directory / f"{session_id}{suffix}"
+
+
+def write_view(session_id: str, state: State) -> None:
+    session_file(session_id, ".md").write_text(view(state))
 
 
 def chain_ops(chain: list[Record]) -> list[Op]:
@@ -151,11 +155,18 @@ def prompt(data: Record) -> None:
     write_view(data["session_id"], state)
     rendering = render(state)
     last = latest_injection(chain)
+    texts = []
     if rendering:
         if rendering != last:
-            inject("UserPromptSubmit", rendering)
+            texts.append(rendering)
     elif last is not None and last != EMPTY:
-        inject("UserPromptSubmit", EMPTY)
+        texts.append(EMPTY)
+    pending = session_file(data["session_id"], ".pending")
+    if pending.exists():
+        texts.append(pending.read_text())
+        pending.unlink()
+    if texts:
+        inject("UserPromptSubmit", "\n\n".join(texts))
 
 
 def compact(data: Record) -> None:
@@ -167,13 +178,11 @@ def compact(data: Record) -> None:
 
 
 def stop(data: Record) -> None:
-    require(data, ["last_assistant_message", "stop_hook_active"])
+    require(data, ["last_assistant_message"])
     message = data["last_assistant_message"] or ""
     own_ops, bad = parse(message)
     state = fold(own_ops, fold(chain_ops(active_chain(load(Path(data["transcript_path"]))))))
     write_view(data["session_id"], state)
-    if data["stop_hook_active"]:
-        return
     missing = sorted(set(DEFINED.findall(message)) - state.keys(), key=sort_key)
     if not missing and not bad:
         return
@@ -182,8 +191,10 @@ def stop(data: Record) -> None:
         problems.append(f"codes defined without a ledger entry: {', '.join(missing)}")
     if bad:
         problems.append(f"malformed ledger items: {bad}")
-    reason = f"Ledger check: {'; '.join(problems)}. Append one delta line as the last line, grammar: {GRAMMAR}"
-    print(json.dumps({"decision": "block", "reason": reason}))
+    summary = f"Ledger check: {'; '.join(problems)}."
+    fix = f"Fix this in the Ledger line of your next answer, grammar: {GRAMMAR}. Omit the line when nothing changed."
+    session_file(data["session_id"], ".pending").write_text(f"Previous answer failed. {summary} {fix}")
+    print(json.dumps({"systemMessage": f"{summary} Fix deferred to the next turn."}))
 
 
 COMMANDS = {"prompt": prompt, "compact": compact, "stop": stop}
