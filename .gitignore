@@ -60,3 +60,4 @@ policy-limits.json.stamp.json
 # Session ledger views (rendered by hooks/ledger.py)
 /ledger/
 __pycache__/
+remote-settings.json.synced-at

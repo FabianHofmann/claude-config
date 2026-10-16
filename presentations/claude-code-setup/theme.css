@@ -219,3 +219,10 @@ section.lead .legend span { border-left: 2px solid var(--sage); padding-left: .4
   color: var(--ink); line-height: 1.2; margin-top: 1.2em; padding: .55em .8em;
   background: var(--sage-tint); border-radius: 22px 22px 22px 6px;
 }
+
+/* part divider */
+section.divider { justify-content: center; padding: 96px 80px 90px; }
+section.divider::before { display: none; }
+section.divider .kicker { font-family: var(--mono); font-size: .8em; letter-spacing: .12em; text-transform: uppercase; color: var(--clay); margin: 0 0 .4em; }
+section.divider h1 { color: var(--ink); margin-bottom: .2em; }
+section.divider .sub { font-size: 1.15em; color: var(--ink-soft); max-width: 30em; }

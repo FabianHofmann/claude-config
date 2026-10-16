@@ -12,11 +12,11 @@ footer: 'Claude Code: lessons learned'
 
 <div class="legend"><span>Why</span><span>Anatomy</span><span>Context</span><span>Attention</span><span>Trust</span><span>Team</span><span>Adopt</span></div>
 
-# Working with Claude Code
+# Working with coding agents
 
 <p class="sub">Lessons learned on how to setup Claude Code for day-to-day work, alone and in a team</p>
 
-<p class="who">Fabian Hofmann, Open Energy Transition</p>
+<p class="who">Fabian Hofmann</p>
 
 <!--
 Twenty minutes of lessons learned from daily work with Claude Code, alone and in a team, and what we recommend as a result. Most recommendations map to plain files in ~/.claude that you can copy.
@@ -33,7 +33,7 @@ The bar at the top of each slide is the talk timeline: grey is ahead, amber is w
 <div class="limits tall">
 <div><b>Context</b>what the model can hold</div>
 <div><b>Attention</b>what you can follow</div>
-<div><b>Trust</b>what you can merge without reading</div>
+<div><b>Trust</b>what you can merge</div>
 </div>
 
 <!--
@@ -153,6 +153,21 @@ This is the map for the rest of the talk. Each recommendation answers one limit,
 Context: make the budget visible, orchestrate sub-agents, write the bulk to files.
 Attention: skimmable output, a ledger, traceable outcomes, fewer permission prompts.
 Trust: rules for the writer, a separate reviewer, the implement-review-revise loop.
+-->
+
+---
+
+<!-- _class: p2 divider -->
+<!-- _header: '' -->
+
+<p class="kicker">Part 1</p>
+
+# Alone with the bot
+
+<p class="sub">One person, one agent: context, attention, trust</p>
+
+<!--
+Part 1 covers the setup for one person working with one agent. Everything here lives in your own ~/.claude folder.
 -->
 
 ---
@@ -407,6 +422,21 @@ Rules alone are not enough, so writer and reviewer are different agents, and the
 The review rubric is signal over noise: explicit do-NOT-flag lists, and evidence for every issue.
 code-fix-bug starts with a failing test; issue-raise needs a minimal reproducible example.
 Rules shape the writer; a separate reviewer catches what rules miss.
+-->
+
+---
+
+<!-- _class: p6 divider -->
+<!-- _header: '' -->
+
+<p class="kicker">Part 2</p>
+
+# In a team (of bots)
+
+<p class="sub">Your output becomes someone else's input: shared spaces, documents, decisions</p>
+
+<!--
+Part 2 covers what changes when other people read what you and your agent produce.
 -->
 
 ---

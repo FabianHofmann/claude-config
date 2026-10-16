@@ -73,6 +73,7 @@
       "Bash(rm -rf /)"
     ]
   },
+  "model": "opus",
   "enabledMcpjsonServers": [],
   "hooks": {
     "PreCompact": [],
@@ -124,7 +125,8 @@
     "code-review@claude-plugins-official": false,
     "context7@claude-plugins-official": false,
     "code-simplifier@claude-plugins-official": false,
-    "frontend-design@claude-plugins-official": true
+    "frontend-design@claude-plugins-official": true,
+    "ralph-loop@anthropic-plugin-directory": true
   },
   "outputStyle": "Standard",
   "effortLevel": "medium",
@@ -137,6 +139,5 @@
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "preferredNotifChannel": "terminal_bell",
-  "voiceEnabled": true,
-  "model": "fable"
+  "voiceEnabled": true
 }
