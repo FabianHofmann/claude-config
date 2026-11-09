@@ -24,4 +24,4 @@ Try a few forms, keep the clearest. Prove each by running the tests that cover t
 
 First, end with one sentence a non-expert could repeat out loud to a colleague
 and be correct. Skip it when the answer is already one or two sentences.
-Then, propose next steps in a enumerated list as "Options for next steps (select)"
+Then, propose next steps in an enumerated list as "Options for next steps (select)"
