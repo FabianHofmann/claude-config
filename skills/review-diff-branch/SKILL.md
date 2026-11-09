@@ -1,16 +1,16 @@
 ---
 name: review-diff-branch
-description: "Run parallel reviewer agents to review the current git diff against master/main. Use when reviewing branch changes before merging."
+description: "Run parallel reviewer agents to review the current git diff against its base branch (PR base, else main/master). Use when reviewing branch changes before merging."
 ---
 
 # Diff Review (Branch)
 
-Review the branch diff against the baseline (`git diff main`, or `git diff master` if `main` doesn't exist).
+Review the branch diff against its base branch.
 
 ## Scope & context
 
-1. Run `git diff main --name-only` (fall back to `master`) to list changed files; apply the ignore filter in the shared rubric.
-2. Run `git diff main` (or `master`) for the changes. The diff alone is rarely enough context — reviewers must read surrounding code, call sites, and tests as needed to satisfy the evidence requirement.
+1. Resolve the base: a branch given as argument; else the base of the branch's open PR (`gh pr view --json baseRefName -q .baseRefName`); else `main`; else `master`. Diff against `$(git merge-base <base> HEAD)` so a stacked branch shows only its own layer. Run `git diff <merge-base> --name-only` to list changed files; apply the ignore filter in the shared rubric.
+2. Run `git diff <merge-base>` for the changes. The diff alone is rarely enough context — reviewers must read surrounding code, call sites, and tests as needed to satisfy the evidence requirement.
 
 ## Apply the shared rubric
 

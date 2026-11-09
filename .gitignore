@@ -61,3 +61,15 @@ policy-limits.json.stamp.json
 /ledger/
 __pycache__/
 remote-settings.json.synced-at
+
+
+# others
+policy-limits.json
+policy-limits.json.*
+remote-settings.json.*
+
+# Private, machine-specific config
+/private/
+.claude.json
+.aws_auth_refresh-*.json
+mcp-needs-auth-cache.json

@@ -9,7 +9,7 @@ Thorough review of branch changes against the baseline with **full file context*
 
 ## Scope & context
 
-1. Run `git diff main --name-only` to list changed files. If `main` doesn't exist try `git diff master --name-only`; if neither exists fall back to `git diff HEAD~1 --name-only`. Apply the ignore filter in the shared rubric.
+1. Resolve the base: a branch given as argument; else the base of the branch's open PR (`gh pr view --json baseRefName -q .baseRefName`); else `main`; else `master`; else `HEAD~1`. Diff against `$(git merge-base <base> HEAD)` so a stacked branch shows only its own layer. Run `git diff <merge-base> --name-only` to list changed files and apply the ignore filter in the shared rubric.
 2. For each surviving source file, Read the **full current implementation**, not just the changed lines. Judge it in light of how it compares to the baseline.
 3. Cross-file context (call sites, type defs elsewhere, existing tests) still must be verified to satisfy the evidence requirement.
 

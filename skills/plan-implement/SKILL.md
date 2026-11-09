@@ -5,9 +5,9 @@ description: Implement an implementation plan by splitting it into areas and del
 
 Implement the referenced plan. If no plan is in your context or referenced as a file, stop and ask the user for it. If the plan exists only in chat, write it to a plan file as `plan-prepare` does. Read the plan file fully.
 
-If the plan contains optional phases, open decisions or prerequisites outside the plan, ask the user which are in scope before you start.
+If the plan contains optional phases, open decisions or prerequisites outside the plan, ask the user which are in scope before you start. If the strategy proposes stacked PRs, ask in the same question whether to keep the stack or raise one PR.
 
-If the plan contains an `# Orchestration strategy` section, run its kickoff sequence exactly and skip the steps below. If it has no such section but defines ordered phases meant as separate commits or PRs, run the `plan-orchestrate` skill first, then follow the strategy it appends.
+If the plan contains an `# Orchestration strategy` section, run its kickoff sequence exactly and skip the steps below. If it has no such section but defines ordered phases meant as separate commits or PRs, run the `plan-orchestrate` skill first, then follow the strategy it appends. After a stacked run, list the PRs bottom-up and tell the user how to cascade review fixes: commit on the lower branch, run `git rebase --update-refs` from the top branch, force-push with lease, merge bottom-up.
 
 You are the coordinator. Keep your context lean: do not read source files, diffs or test output, and do not redo or re-review agent work. You keep the plan, the area split and the agent reports. Spawn agents with `model: opus`, except the step 5 test runner with `model: sonnet`.
 
